@@ -6,3 +6,33 @@ ERROR 2024-09-12 17:28:25,450 log Internal Server Error: /user/login
 ERROR 2024-09-12 17:28:25,450 basehttp "POST /user/login HTTP/1.1" 500 101
 ERROR 2024-09-12 17:31:01,498 log Internal Server Error: /user/login
 ERROR 2024-09-12 17:31:01,498 basehttp "POST /user/login HTTP/1.1" 500 101
+ERROR 2024-09-13 15:12:46,234 log Internal Server Error: /user/login
+ERROR 2024-09-13 15:12:46,234 basehttp "POST /user/login HTTP/1.1" 500 101
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 101
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 101
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 1935
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 876

@@ -131,18 +131,18 @@ import os
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
+    # 'formatters': {
+    #     'verbose': {
+    #         'format': '{levelname} {asctime} {module} {message}',
+    #         'style': '{',
+    #     },
+    # },
     'handlers': {
         'file': {
             'level': 'ERROR',  # Set the level to ERROR to log only errors and above
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'errors.log'),  # Log file path
-            'formatter': 'verbose',  # Formatter to use
+            # 'formatter': 'verbose',  # Formatter to use
         },
     },
     'loggers': {
