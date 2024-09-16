@@ -36,3 +36,149 @@ Internal Server Error: /user/signup
 "POST /user/signup HTTP/1.1" 500 1935
 Internal Server Error: /user/login
 "POST /user/login HTTP/1.1" 500 876
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 673
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 4275
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 848
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1602
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 4390
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 4390
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 3318
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 3318
+Internal Server Error: /user/signup
+"POST /user/signup HTTP/1.1" 500 3318
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1686
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1688
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1688
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1478
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1478
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1478
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1482
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1482
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1482
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1482
+Internal Server Error: /user/login
+"POST /user/login HTTP/1.1" 500 1482
+Internal Server Error: /user/forget_password
+"POST /user/forget_password HTTP/1.1" 500 526
+Internal Server Error: /user/forget_password
+"POST /user/forget_password HTTP/1.1" 500 393
+Internal Server Error: /user/verify_otp
+Traceback (most recent call last):
+  File "D:\django\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\TURF_BOOKING\user\views.py", line 170, in verify_otp
+    print(saved_otp.username)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'QuerySet' object has no attribute 'username'
+"POST /user/verify_otp HTTP/1.1" 500 95155
+Internal Server Error: /user/verify_otp
+Traceback (most recent call last):
+  File "D:\django\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\TURF_BOOKING\user\views.py", line 170, in verify_otp
+    print(saved_otp.username)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'QuerySet' object has no attribute 'username'
+"POST /user/verify_otp HTTP/1.1" 500 95155
+Internal Server Error: /user/verify_otp
+Traceback (most recent call last):
+  File "D:\django\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\env\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\django\TURF_BOOKING\user\views.py", line 170, in verify_otp
+    print(saved_otp.username)
+          ^^^^^^^^^^^^^^^^^^
+AttributeError: 'QuerySet' object has no attribute 'username'
+"POST /user/verify_otp HTTP/1.1" 500 95155
+Internal Server Error: /user/verify_otp
+"POST /user/verify_otp HTTP/1.1" 500 898
+Internal Server Error: /user/verify_otp
+"POST /user/verify_otp HTTP/1.1" 500 898
+Internal Server Error: /user/verify_otp
+"POST /user/verify_otp HTTP/1.1" 500 898
