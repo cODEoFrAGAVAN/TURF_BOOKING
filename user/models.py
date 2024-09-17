@@ -33,3 +33,5 @@ class Forget_user_password(models.Model):
     mailid = models.EmailField(max_length=50,unique=True,null=False)
     otp = models.CharField(max_length=6,null=False)
     isvalid = models.CharField(null=False,default='True',max_length=10)
+    def __str__(self) -> str:
+        return self.user_name

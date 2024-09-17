@@ -3,6 +3,12 @@
 import os
 import sys
 
+def folder_creation():
+    if not os.path.isdir("./static"):
+        os.makedirs("./static")
+    
+    if not os.path.isdir("./static/turf_images"):
+        os.makedirs("./static/turf_images")
 
 def main():
     """Run administrative tasks."""
@@ -19,4 +25,5 @@ def main():
 
 
 if __name__ == "__main__":
+    folder_creation()
     main()

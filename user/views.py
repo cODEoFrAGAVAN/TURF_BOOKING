@@ -133,9 +133,10 @@ def user_signin_up(request):
 def forget_user_password(request):
     try:
         input_data = request.data.copy()
+        user_name = input_data.get("user_name",None)
         random_number = random.randint(100000, 999999)
-        user = User_signup.objects.get(user_name=input_data["user_name"])
-        print("user : : ",user)
+        user = User_signup.objects.get(user_name=user_name)
+        # print("user : : ",user)
         input_data['mobile_number'] = user.mobile_number
         input_data['mailid'] = user.mailid
         input_data['otp'] = str(random_number)
@@ -155,6 +156,13 @@ def forget_user_password(request):
                     "msg":"otp not sent"
                 },status=401
             )
+    except User_signup.DoesNotExist:
+        return Response(
+            {
+                'stat':'Not Ok',
+                'error':"user doesn't exists"
+            },status=401
+        )
     except Exception as e:
         print(": : forget password error : : "+str(e)+" : : traceback : : "+traceback.format_exc())
         return Response({
@@ -167,8 +175,17 @@ def forget_user_password(request):
 def verify_otp(request):
     try:
         input_data = request.data.copy()
+        user_name = input_data.get("input_data",None)
+        otp = input_data.get("otp",None)
+        if user_name is None or otp is None:
+            return Response(
+                {
+                    'stat':'Not Ok',
+                    'error':'give correct credentials'
+                },status=401
+            )
         saved_otp = Forget_user_password.objects.get(user_name = input_data['user_name'],otp = input_data['otp'])
-        if saved_otp.user_name == input_data["user_name"] and saved_otp.otp == input_data["otp"]:
+        if saved_otp.user_name == user_name and saved_otp.otp == otp:
             return Response(
                 {
                     "stat":"Ok",
@@ -203,7 +220,7 @@ def verify_otp(request):
 def update_password(request):
     try:
         input_data = request.data.copy()
-        saved_otp = Forget_user_password.objects.get(user_name = input_data['user_name'],otp = input_data['otp'])
+        saved_otp = Forget_user_password.objects.get(user_name = input_data['user_name'],otp = input_data['otp'],isvalid = 'True')
         saved_otp.isvalid = 'False'
         saved_otp.save()
         update_pass = User_signup.objects.get(user_name=request.data["user_name"])

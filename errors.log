@@ -182,3 +182,83 @@ Internal Server Error: /user/verify_otp
 "POST /user/verify_otp HTTP/1.1" 500 898
 Internal Server Error: /user/verify_otp
 "POST /user/verify_otp HTTP/1.1" 500 898
+Internal Server Error: /turf/turf_registration
+"POST /turf/turf_registration HTTP/1.1" 500 434
+Internal Server Error: /turf/turf_registration
+"POST /turf/turf_registration HTTP/1.1" 500 434
+Internal Server Error: /turf/turf_registration
+"POST /turf/turf_registration HTTP/1.1" 500 558
+Internal Server Error: /turf/check_otp
+"POST /turf/check_otp HTTP/1.1" 500 696
+Internal Server Error: /turf/check_otp
+Traceback (most recent call last):
+  File "D:\django\turfbooking\turfs\views.py", line 152, in check_otp
+    check_data = Forget_turf_password.objects.get(user_name = user_name,otp = otp)
+  File "D:\django\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\django\env\lib\site-packages\django\db\models\query.py", line 649, in get
+    raise self.model.DoesNotExist(
+turfs.models.Forget_turf_password.DoesNotExist: Forget_turf_password matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\django\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\django\env\lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "D:\django\turfbooking\turfs\views.py", line 167, in check_otp
+    except check_data.DoesNotExist:
+UnboundLocalError: local variable 'check_data' referenced before assignment
+"POST /turf/check_otp HTTP/1.1" 500 110918
+Internal Server Error: /turf/check_otp
+Traceback (most recent call last):
+  File "D:\django\turfbooking\turfs\views.py", line 152, in check_otp
+    check_data = Forget_turf_password.objects.get(user_name = user_name,otp = otp)
+  File "D:\django\env\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\django\env\lib\site-packages\django\db\models\query.py", line 649, in get
+    raise self.model.DoesNotExist(
+turfs.models.Forget_turf_password.DoesNotExist: Forget_turf_password matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\django\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\django\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\django\env\lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+  File "D:\django\turfbooking\turfs\views.py", line 167, in check_otp
+    except check_data.DoesNotExist:
+UnboundLocalError: local variable 'check_data' referenced before assignment
+"POST /turf/check_otp HTTP/1.1" 500 110918
+Internal Server Error: /turf/update_password
+"POST /turf/update_password HTTP/1.1" 500 2886
