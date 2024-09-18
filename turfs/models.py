@@ -13,6 +13,7 @@ class Turf_registration(models.Model):
     registration_date = models.DateField(default=timezone.now)
     user_name = models.CharField(max_length=20,unique=True,null=False)
     password = models.CharField(max_length=128,null=False)
+    turf_ids = models.CharField(max_length=30,null=False,unique=True)
     def __str__(self) -> str:
         return self.user_name
 

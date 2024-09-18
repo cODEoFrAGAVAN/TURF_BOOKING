@@ -32,6 +32,7 @@ def turf_registration(request):
             del input_data['turf_images']
         # print("turf_images_dict :: ",turf_images_dict)
         input_data['turf_images_path'] = json.dumps(turf_images_dict)
+        input_data['turf_ids'] = datetime.now().strftime('%d%m%Y%H%M%S')
         serializer = Turf_registration_serializers(data = input_data)
         data_dict = dict()
         if serializer.is_valid():
