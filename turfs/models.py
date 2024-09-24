@@ -14,6 +14,8 @@ class Turf_registration(models.Model):
     user_name = models.CharField(max_length=20,unique=True,null=False)
     password = models.CharField(max_length=128,null=False)
     turf_ids = models.CharField(max_length=30,null=False,unique=True)
+    turf_start_time = models.CharField(max_length=10,null=False,default='6 A.M')
+    turf_end_time = models.CharField(max_length=10,null=False,default='12 P.M')
     def __str__(self) -> str:
         return self.user_name
 
@@ -33,4 +35,3 @@ class Forget_turf_password(models.Model):
     isvalid = models.CharField(null=False,default='True',max_length=10)
     def __str__(self) -> str:
         return self.user_name
-    

@@ -255,5 +255,3 @@ def update_password(request):
                 "traceback":str(traceback.format_exc())
             },status=500
         )
-
-

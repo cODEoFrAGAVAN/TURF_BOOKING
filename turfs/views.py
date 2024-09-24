@@ -4,11 +4,12 @@ from .serializers import *
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from datetime import datetime
+from datetime import datetime,timedelta
 from user.auth import user_secret_key
 import traceback
 import json
 import random
+import jwt
 # import os
 
 turf_images_location = './static/turf_images/'
@@ -42,6 +43,7 @@ def turf_registration(request):
             data_dict['random_token'] = str(user_secret_key())
             serializer1 = Random_token_seriallizer1(data = data_dict)
             if serializer1.is_valid():
+                serializer1.save()
                 return Response(
                     {
                         'stat':'Ok',
@@ -240,9 +242,21 @@ def turf_user_login(request):
             )
         user = Turf_registration.objects.get(user_name = user_name,password = password)
         if user:
-            return Response(
-                {'stat':'Ok'}
-            )
+            expired_time = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d %H:%M:%S")
+            secret_key = Random_token_generation.objects.get(user_name=user.user_name)
+            payload = {
+                    "date": user.created_date.strftime("%Y-%m-%d %H:%M:%S"),
+                    "user_name": user.user_name,
+                    "password": user.password,
+                    "exp_time": expired_time,
+                }
+            encoded = jwt.encode(payload, (secret_key.random_token), algorithm="HS256")
+            return JsonResponse(
+                    {"msg": "Log in successfully", "stat": "Ok", "token": encoded},
+                    status=200,
+                )
+        else:
+            return JsonResponse({"msg": "Log in failed", "stat": "Ok"}, status=400)
     except Exception as e:
         print(":: turf login error ::"+str(e)+" :: traceback :: "+traceback.format_exc())
         return Response(
@@ -252,3 +266,21 @@ def turf_user_login(request):
                 'traceback':str(traceback.format_exc())
             },status=500
         )
+
+# @api_view(['POST'])
+# def update_turf_deatils(request):
+#     try:
+#         input_data = request.data.copy()
+        
+#     except Exception as e:
+#         print(" :: update turf details :: "+str(e)+" :: traceback :: "+traceback.format_exc())
+#         return Response(
+#             {
+#                 "stat":"Not Ok",
+#                 "error":str(e),
+#                 "traceback":str(traceback.format_exc())
+#             },status=500
+#         )
+    
+
+
