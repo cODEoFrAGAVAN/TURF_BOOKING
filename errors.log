@@ -262,3 +262,9 @@ UnboundLocalError: local variable 'check_data' referenced before assignment
 "POST /turf/check_otp HTTP/1.1" 500 110918
 Internal Server Error: /turf/update_password
 "POST /turf/update_password HTTP/1.1" 500 2886
+Internal Server Error: /turf/update_turf_details
+"POST /turf/update_turf_details HTTP/1.1" 500 421
+Internal Server Error: /turf/update_turf_details
+"POST /turf/update_turf_details HTTP/1.1" 500 421
+Internal Server Error: /turf/update_turf_details
+"POST /turf/update_turf_details HTTP/1.1" 500 469

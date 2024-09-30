@@ -267,20 +267,85 @@ def turf_user_login(request):
             },status=500
         )
 
-# @api_view(['POST'])
-# def update_turf_deatils(request):
-#     try:
-#         input_data = request.data.copy()
-        
-#     except Exception as e:
-#         print(" :: update turf details :: "+str(e)+" :: traceback :: "+traceback.format_exc())
-#         return Response(
-#             {
-#                 "stat":"Not Ok",
-#                 "error":str(e),
-#                 "traceback":str(traceback.format_exc())
-#             },status=500
-#         )
+@api_view(['POST'])
+def update_turf_deatils(request):
+    try:
+        input_data = request.data.copy()
+        user_name = input_data.get("user_name",None)
+        password = input_data.get("password",None)
+        update_key = input_data.get("update_key",None)
+        # value = input_data.get("value",None)
+        # value is None 
+        if update_key is None or  user_name is None or password is None or update_key == {}:
+            return Response(
+                {
+                    "stat":"Not Ok",
+                    "error":"give correct key and value for updating turf details"
+                },status = 401
+            )
+        else:
+            update_details = Turf_registration.objects.get(user_name=user_name,password=password)
+            if "turf_name" in update_key:
+                update_details.turf_name = update_key["turf_name"]
+            if "turf_address" in update_key:
+                update_details.turf_address = update_key["turf_address"]
+            if "turf_pincode" in update_key:
+                update_details.turf_pincode = update_key["turf_pincode"]
+            if "tur_land_line_number" in update_key:
+                update_details.tur_land_line_number = update_key["tur_land_line_number"]
+            if "turf_end_time" in update_key:
+                update_details.turf_end_time = update_key["turf_end_time"]
+            if "turf_start_time" in update_key:
+                update_details.turf_start_time = update_key["turf_start_time"]
+            update_details.save()
+            return Response(
+            {
+                "stat":"Ok",
+                "msg":"Data updated successfully"
+            },status=200
+        )
+    except Exception as e:
+        print(" :: update turf details :: "+str(e)+" :: traceback :: "+traceback.format_exc())
+        return Response(
+            {
+                "stat":"Not Ok",
+                "error":str(e),
+                "traceback":str(traceback.format_exc())
+            },status=500
+        )
     
-
+@api_view(['POST'])
+def update_turf_mobile_number(request):
+    try:
+        input_data = request.data.copy()
+        random_number = random.randint(100000, 999999)
+        input_data["otp"] = str(random_number)
+        input_data["isvalid"] = "True"
+        serializer = Update_turf_mobile_number_serializer1(data = input_data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "stat":"Ok",
+                    "msg":"Otp sent to new number",
+                    "otp":str(random_number)
+                },status = 200
+            )
+        else:
+            return Response(
+                {
+                    'stat':'Not Ok',
+                    'error':serializer.errors,
+                    'msg':'otp not sent'
+                },status=401
+            )
+    except Exception as e:
+        print(" :: update turf mobile :: "+str(e)+" :: traceback :: "+traceback.format_exc())
+        return Response(
+            {
+                "stat":"Not Ok",
+                "error":str(e),
+                "traceback":str(traceback.format_exc())
+            },status=500
+        )
 

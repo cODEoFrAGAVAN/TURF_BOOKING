@@ -16,4 +16,8 @@ class Random_token_seriallizer1(serializers.ModelSerializer):
         model = Random_token_generation
         fields = '__all__'
 
-
+class Update_turf_mobile_number_serializer1(serializers.ModelSerializer):
+    class Meta:
+        model = Update_turf_mobile_number
+        fields = '__all__'
+    

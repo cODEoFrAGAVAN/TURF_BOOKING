@@ -35,3 +35,12 @@ class Forget_turf_password(models.Model):
     isvalid = models.CharField(null=False,default='True',max_length=10)
     def __str__(self) -> str:
         return self.user_name
+    
+
+class Update_turf_mobile_number(models.Model):
+    user_name = models.CharField(max_length = 20,null=False)
+    new_mobile_number = models.CharField(max_length=10,null= False,primary_key=True)
+    otp = models.CharField(max_length=6,null=False)
+    isvalid = models.CharField(null=False,default='True',max_length=10)
+    def __str__(self) -> str:
+        return self.user_name
