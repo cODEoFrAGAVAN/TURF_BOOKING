@@ -268,3 +268,80 @@ Internal Server Error: /turf/update_turf_details
 "POST /turf/update_turf_details HTTP/1.1" 500 421
 Internal Server Error: /turf/update_turf_details
 "POST /turf/update_turf_details HTTP/1.1" 500 469
+Internal Server Error: /turf/update_turf_mobile_number
+"POST /turf/update_turf_mobile_number HTTP/1.1" 500 4537
+Internal Server Error: /turf/verify_updated_number
+"POST /turf/verify_updated_number HTTP/1.1" 500 3118
+Internal Server Error: /turf/verify_updated_number
+Traceback (most recent call last):
+  File "D:\Turf_Booking\TURF_BOOKING\turfs\views.py", line 398, in verify_new_turf_mbnum
+    update_mob = Update_turf_mobile_number.objects.get(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\query.py", line 635, in get
+    clone = self._chain() if self.query.combinator else self.filter(*args, **kwargs)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\query.py", line 1476, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\query.py", line 1494, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\query.py", line 1501, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\sql\query.py", line 1609, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\sql\query.py", line 1641, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\sql\query.py", line 1491, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\sql\query.py", line 1303, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\db\models\sql\query.py", line 1768, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'mobile_number' into field. Choices are: isvalid, new_mobile_number, otp, user_name
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Turf_Booking\env\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "D:\Turf_Booking\env\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "D:\Turf_Booking\env\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\env\Lib\site-packages\rest_framework\decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Turf_Booking\TURF_BOOKING\turfs\views.py", line 413, in verify_new_turf_mbnum
+    except turf_reg.DoesNotExist:
+           ^^^^^^^^
+UnboundLocalError: cannot access local variable 'turf_reg' where it is not associated with a value
+"POST /turf/verify_updated_number HTTP/1.1" 500 152435
+Internal Server Error: /turf/verify_updated_number
+"POST /turf/verify_updated_number HTTP/1.1" 500 2776
+Internal Server Error: /turf/verify_updated_number
+"POST /turf/verify_updated_number HTTP/1.1" 500 2776
+Internal Server Error: /turf/verify_updated_number
+"POST /turf/verify_updated_number HTTP/1.1" 500 2766
