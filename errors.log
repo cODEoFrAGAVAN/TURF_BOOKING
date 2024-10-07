@@ -345,3 +345,5 @@ Internal Server Error: /turf/verify_updated_number
 "POST /turf/verify_updated_number HTTP/1.1" 500 2776
 Internal Server Error: /turf/verify_updated_number
 "POST /turf/verify_updated_number HTTP/1.1" 500 2766
+Internal Server Error: /bookings/turf_list
+"POST /bookings/turf_list HTTP/1.1" 500 88
