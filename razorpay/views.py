@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import traceback
+from datetime import *
 
 # Create your views here.
 
@@ -13,17 +14,12 @@ import traceback
 def test_credentials(request):
     try:
         input_data = request.data.copy()
-        serializer = Test_credentials_serializers(input=input_data)
+        input_data["saved_date_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        serializer = Test_credentials_serializers(data=input_data)
         if serializer.is_valid():
-            record = Test_credentials.objects.first()
-            if record:
-                record.key_id = input_data["key_id"]
-                record.secret = input_data["secret"]
-                record.save()
-                return JsonResponse({"stat": "Ok", "msg": "Data updated"}, status=200)
-            else:
-                serializer.save()
-                return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status=200)
+            Test_credentials.objects.all().update(active_status="NO")
+            serializer.save()
+            return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status=200)
         else:
             return JsonResponse(
                 {"stat": "Not Ok", "error": serializer.errors}, status=401

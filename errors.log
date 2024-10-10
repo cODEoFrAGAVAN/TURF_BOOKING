@@ -353,3 +353,9 @@ Internal Server Error: /bookings/booking
 "POST /bookings/booking HTTP/1.1" 500 1395
 Internal Server Error: /bookings/booking
 "POST /bookings/booking HTTP/1.1" 500 3576
+Internal Server Error: /razorpay/tcred
+"POST /razorpay/tcred HTTP/1.1" 500 501
+Internal Server Error: /razorpay/tcred
+"POST /razorpay/tcred HTTP/1.1" 500 294
+Internal Server Error: /razorpay/tcred
+"POST /razorpay/tcred HTTP/1.1" 500 2347

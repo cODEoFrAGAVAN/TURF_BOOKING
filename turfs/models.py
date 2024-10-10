@@ -53,8 +53,8 @@ class Update_turf_mobile_number(models.Model):
         return self.user_name
 
 class Turf_bank_details(models.Model):
-    turf_id = models.CharField(max_length=50, null=False)
-    bank_account_number = models.CharField(max_length=30,null=False)
+    turf_id = models.CharField(max_length=50, null=False,unique=True)
+    bank_account_number = models.CharField(max_length=30,null=False,unique=True)
     ifsc_code = models.CharField(max_length=20,null=False)
     rpay_vir_account_number = models.CharField(max_length=30,null=False)
     

@@ -20,4 +20,9 @@ class Update_turf_mobile_number_serializer1(serializers.ModelSerializer):
     class Meta:
         model = Update_turf_mobile_number
         fields = '__all__'
+
+class Turf_bank_details_serilalizer1(serializers.ModelSerializer):
+    class Meta:
+        model = Turf_bank_details
+        fields = ['turf_id','bank_account_number','ifsc_code']
     

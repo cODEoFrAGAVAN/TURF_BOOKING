@@ -22,5 +22,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("user/",include('user.urls')),
     path("turf/",include('turfs.urls')),
-    path("bookings/",include('bookings.urls'))
+    path("bookings/",include('bookings.urls')),
+    path("razorpay/",include('razorpay.urls'))
 ]

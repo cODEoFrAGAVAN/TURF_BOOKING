@@ -1,35 +1,60 @@
 import razorpay
+from razorpay.models import *
 
 
-KEY_ID = "YOUR_KEY_ID"
-KEY_SECRET = "YOUR_KEY_SECRET"
-client = razorpay.Client(auth=(KEY_ID, KEY_SECRET))
+def credentials(modelname):
+    if modelname == "TEST":
+        cred = Test_credentials.objects.values('key_id','secret').get(active_status = "YES")
+        if cred:
+            return {
+                "key_id":cred.key_id,
+                "secret":cred.secret,
+                "stat":"Ok"
+            }
+        else:
+            return {
+                "key_id":"",
+                "secret":"",
+                "stat":"Not Ok"
+            }
 
-def create_customer(name, email, contact):
-    try:
-        customer_data = {"name": name, "email": email, "contact": contact}
-        customer = client.customer.create(customer_data)
-        print(f"Customer created with ID: {customer['id']}")
-        return customer
-    except Exception as e:
-        print(f"Error creating customer: {e}")
-        return None
+def create_client_session(KEY_ID,KEY_SECRET):
+    client = razorpay.Client(auth=(KEY_ID, KEY_SECRET))
+    return client
 
-def get_customer_by_email(email):
+
+def get_customer_by_email(email,client):
     try:
         customers = client.customer.all({'email': email})
         if customers['count'] > 0:
             customer = customers['items'][0]
-            print(f"Customer found with ID: {customer['id']}")
-            return customer
+            return {"customer":customer,"stat":"Ok"}
         else:
-            print("No customer found with the provided email.")
-            return None
+            return {"customer":"","stat":"Not OK"}
     except Exception as e:
         print(f"Error retrieving customer: {e}")
-        return None
+        return {
+            "error":str(e),
+            "stat":"Not OK"
+        }
 
-def create_fund_account(customer_id, account_holder_name, ifsc, account_number):
+
+def create_customer(name, email, contact,client):
+    try:
+        customer_data = {"name": name, "email": email, "contact": contact}
+        customer = client.customer.create(customer_data)
+        return {
+            "customer":customer,
+            "stat":"Ok"
+        }
+    except Exception as e:
+        print(f"Error creating customer: {e}")
+        return {
+            "stat":"Not Ok",
+            "error":str(e)
+        }
+
+def create_fund_account(customer_id, account_holder_name, ifsc, account_number,client):
     try:
         fund_account_data = {
             "customer_id": customer_id,
@@ -42,39 +67,29 @@ def create_fund_account(customer_id, account_holder_name, ifsc, account_number):
         }
         fund_account = client.fund_account.create(fund_account_data)
         print(f"Fund Account created with ID: {fund_account['id']}")
-        return fund_account
+        return {"fund_account":fund_account,"stat":"Ok"}
     except Exception as e:
         print(f"Error creating Fund Account: {e}")
-        return None
+        return {
+            "error":str(e),
+            "stat":"Not Ok"
+        }
 
-def list_fund_accounts(customer_id):
-    try:
-        fund_accounts = client.fund_account.all({'customer_id': customer_id})
-        if fund_accounts['count'] > 0:
-            print(f"Found {fund_accounts['count']} Fund Account(s) for customer ID {customer_id}:")
-            for fa in fund_accounts['items']:
-                print(f" - ID: {fa['id']}, Account Holder: {fa['bank_account']['name']}")
-            return fund_accounts['items']
-        else:
-            print("No Fund Accounts found for this customer.")
-            return []
-    except Exception as e:
-        print(f"Error listing Fund Accounts: {e}")
-        return []
+# def list_fund_accounts(customer_id,client):
+#     try:
+#         fund_accounts = client.fund_account.all({'customer_id': customer_id})
+#         if fund_accounts['count'] > 0:
+#             print(f"Found {fund_accounts['count']} Fund Account(s) for customer ID {customer_id}:")
+#             for fa in fund_accounts['items']:
+#                 print(f" - ID: {fa['id']}, Account Holder: {fa['bank_account']['name']}")
+#             return {"fund_accounts":fund_accounts['items'],"stat":"Ok"}
+#         else:
+#             return {"fund_accounts":[],"stat":"Ok"}
+#     except Exception as e:
+#         return {"fund_accounts":[],"stat":"Not Ok","error":str(e)}
 
-def initiate_penny_drop(fund_account_id, amount=100, currency="INR", mode="IMPS"):
-    """
-    Initiates a penny drop by sending a small amount to the specified fund account.
-    
-    Parameters:
-    - fund_account_id (str): The ID of the fund account to send the penny drop to.
-    - amount (int): The amount to send in paise. Default is 100 paise (₹1).
-    - currency (str): Currency code. Default is INR.
-    - mode (str): Transfer mode. Default is IMPS. Alternatives include NEFT, RTGS, etc.
-    
-    Returns:
-    - dict: Response from Razorpay API.
-    """
+
+def initiate_penny_drop(fund_account_id,client, amount=100, currency="INR", mode="IMPS"):
     try:
         payout_data = {
             "fund_account_id": fund_account_id,
@@ -91,16 +106,7 @@ def initiate_penny_drop(fund_account_id, amount=100, currency="INR", mode="IMPS"
         print(f"Error initiating payout: {e}")
         return None
 
-def get_payout_status(payout_id):
-    """
-    Retrieves the status of a payout.
-    
-    Parameters:
-    - payout_id (str): The ID of the payout to check.
-    
-    Returns:
-    - dict: Payout details including status.
-    """
+def get_payout_status(payout_id,client):
     try:
         payout = client.payout.fetch(payout_id)
         status = payout['status']
@@ -110,47 +116,29 @@ def get_payout_status(payout_id):
         print(f"Error fetching payout status: {e}")
         return None
 
-# Example Workflow
-def main():
-    # Step 1: Create or Retrieve Customer
-    customer_email = "john.doe@example.com"
-    customer = get_customer_by_email(customer_email)
-    if not customer:
-        customer = create_customer(
-            name="John Doe",
-            email=customer_email,
-            contact="9123456789"
-        )
-    customer_id = customer['id'] if customer else None
 
-    if not customer_id:
-        print("Cannot proceed without a valid customer ID.")
-        return
 
-    # Step 2: Create Fund Account
-    fund_account = create_fund_account(
-        customer_id=customer_id,
-        account_holder_name="John Doe",
-        ifsc="HDFC0001234",
-        account_number="1234567890"
-    )
-    fund_account_id = fund_account['id'] if fund_account else None
 
-    if not fund_account_id:
-        print("Cannot proceed without a valid Fund Account ID.")
-        return
-
-    # Step 3: Initiate Penny Drop
-    payout = initiate_penny_drop(fund_account_id)
-    if payout:
-        print(f"Penny Drop initiated successfully. Payout ID: {payout['id']}")
-        # Optionally, check payout status
-        get_payout_status(payout['id'])
-    else:
-        print("Failed to initiate Penny Drop.")
-
-    # Optional: List all Fund Accounts for the customer
-    existing_fund_accounts = list_fund_accounts(customer_id)
-
-if __name__ == "__main__":
-    main()
+def main_func(using_cred,clientname,clientemail,contact,ifsc,account_number):
+    check_customer = get_customer_by_email(clientemail)
+    if "error" not in check_customer and check_customer["stat"] == "Ok":
+        pass
+    elif "error" not in check_customer and check_customer["stat"] != "Ok":
+        get_cred = credentials(using_cred)
+        if get_cred["stat"] == "Ok":
+            session = create_client_session(get_cred["key_id"],get_cred["secret"])
+            create_user = create_customer(clientname,clientemail,contact,session)
+            if create_user["stat"] == "Ok":
+                fund_acc = create_fund_account(create_user["customer_id"],clientname,ifsc,account_number,session)
+                if fund_acc["stat"] == "Ok":
+                    pass
+                else:
+                    pass
+            else:
+                pass
+            
+        else:
+            return {
+                "error":"getting credentials error",
+                "stat":"Not Ok"
+            }

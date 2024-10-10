@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "user",
     "turfs",
-    "bookings"
+    "bookings",
+    "razorpay"
 ]
 
 MIDDLEWARE = [
