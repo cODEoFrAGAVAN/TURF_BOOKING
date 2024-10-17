@@ -10,7 +10,7 @@ import traceback
 import json
 import random
 import jwt
-
+from .razorpay_payments import main_func
 # import os
 
 turf_images_location = "./static/turf_images/"
@@ -432,4 +432,36 @@ def verify_new_turf_mbnum(request):
                 "traceback": str(traceback.format_exc()),
             },
             status=500,
+        )
+
+
+@api_view(['POST'])
+def add_bank_details(request):
+    try:
+        input_data = request.data.copy()
+        user_name = input_data.get("user_name",None)
+        turf_id = input_data.get("turf_id",None)
+        client_name = input_data.get("client_name",None)
+        client_email = input_data.get("client_email",None)
+        contact = input_data.get("contact_number",None)
+        bank_ifsc = input_data.get("ifsc",None)
+        bank_account_number = input_data.get("account_number",None)
+        if (user_name is None or client_email is None or client_name is None or contact is None or bank_ifsc is None or bank_account_number is None) or (user_name == "" or client_email == "" or client_name == "" or contact == "" or bank_ifsc == "" or bank_account_number == ""):
+            return JsonResponse(
+                {
+                    "error":"give correct input data"
+                },status = 500
+            )
+        msg = main_func(using_cred="TEST",clientname=client_name,clientemail=client_email,contact=contact,ifsc=bank_ifsc,account_number=bank_account_number)
+        return JsonResponse({
+            "stat":"Ok",
+            "success_msg":msg
+        })
+    except Exception as e:
+        return JsonResponse(
+            {
+                "stat":"Not Ok",
+                "error":str(e),
+                "msg":"error in add bank details api"
+            },status = 500
         )

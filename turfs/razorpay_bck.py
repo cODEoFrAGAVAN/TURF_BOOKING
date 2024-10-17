@@ -1,9 +1,9 @@
-import razorpay
+import razorpay_datas
 
 
 KEY_ID = "YOUR_KEY_ID"
 KEY_SECRET = "YOUR_KEY_SECRET"
-client = razorpay.Client(auth=(KEY_ID, KEY_SECRET))
+client = razorpay_datas.Client(auth=(KEY_ID, KEY_SECRET))
 
 def create_customer(name, email, contact):
     try:

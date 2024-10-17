@@ -359,3 +359,21 @@ Internal Server Error: /razorpay/tcred
 "POST /razorpay/tcred HTTP/1.1" 500 294
 Internal Server Error: /razorpay/tcred
 "POST /razorpay/tcred HTTP/1.1" 500 2347
+Internal Server Error: /turf/add_bank_details
+"POST /turf/add_bank_details HTTP/1.1" 500 36
+Internal Server Error: /turf/add_bank_details
+Traceback (most recent call last):
+  File "D:\django\env\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "D:\django\env\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\django\env\lib\site-packages\django\views\decorators\csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "D:\django\env\lib\site-packages\rest_framework\views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `StreamingHttpResponse` to be returned from the view, but received a `<class 'NoneType'>`
+"POST /turf/add_bank_details HTTP/1.1" 500 80800

@@ -11,7 +11,7 @@ import json
 import time
 import random
 from datetime import datetime
-import razorpay
+import razorpay_datas
 
 
 
@@ -40,7 +40,7 @@ def show_turf_list(request):
 
 def payment_intiate(booking_id,amount):
     try:
-        razorpay_client = razorpay.Client(auth=("rzp_test_OduFyTcaEnLe6N", "wK80MjEIAc9aPoL2BLUTIOlS"))
+        razorpay_client = razorpay_datas.Client(auth=("rzp_test_OduFyTcaEnLe6N", "wK80MjEIAc9aPoL2BLUTIOlS"))
         # payment_id = booking_id
         data = { "amount": amount, "currency": "INR", "receipt":booking_id}
         payment = razorpay_client.order.create(data=data)
@@ -172,10 +172,10 @@ def verify_payment(request):
             'razorpay_payment_id': razorpay_payment_id,
             'razorpay_signature': razorpay_signature
         }
-        razorpay.razorpay_client.utility.verify_payment_signature(signature_dict)
-        payment = razorpay.razorpay_client.payment.fetch(razorpay_payment_id)
+        razorpay_datas.razorpay_client.utility.verify_payment_signature(signature_dict)
+        payment = razorpay_datas.razorpay_client.payment.fetch(razorpay_payment_id)
         if payment['status'] == 'authorized':
-            get_data1 = razorpay.razorpay_client.payment.capture(razorpay_payment_id, payment['amount'])
+            get_data1 = razorpay_datas.razorpay_client.payment.capture(razorpay_payment_id, payment['amount'])
             print(get_data1)
             return JsonResponse(
                 {
@@ -183,7 +183,7 @@ def verify_payment(request):
                     "msg":"Payment Verified Successfully"
                 },status=200
             )
-    except razorpay.errors.SignatureVerificationError:
+    except razorpay_datas.errors.SignatureVerificationError:
         return JsonResponse(
             {
                 "stat":"Not Ok",

@@ -1,14 +1,16 @@
 import razorpay
-from razorpay.models import *
+from razorpay_datas.models import *
+
 
 
 def credentials(modelname):
     if modelname == "TEST":
         cred = Test_credentials.objects.values('key_id','secret').get(active_status = "YES")
+        print("cred :: ",cred)
         if cred:
             return {
-                "key_id":cred.key_id,
-                "secret":cred.secret,
+                "key_id":cred["key_id"],
+                "secret":cred["secret"],
                 "stat":"Ok"
             }
         else:
@@ -19,6 +21,8 @@ def credentials(modelname):
             }
 
 def create_client_session(KEY_ID,KEY_SECRET):
+    print("KEY_ID :: ",KEY_ID)
+    print("KEY_SECRET :: ",KEY_SECRET)
     client = razorpay.Client(auth=(KEY_ID, KEY_SECRET))
     return client
 
@@ -101,44 +105,76 @@ def initiate_penny_drop(fund_account_id,client, amount=100, currency="INR", mode
         }
         payout = client.payout.create(payout_data)
         print(f"Payout initiated with ID: {payout['id']}")
-        return payout
+        return {
+            "stat":"Ok",
+            "payout":payout
+        }
     except Exception as e:
         print(f"Error initiating payout: {e}")
-        return None
+        return {
+            "stat":"Not Ok",
+            "error":str(e)
+        }
 
 def get_payout_status(payout_id,client):
     try:
         payout = client.payout.fetch(payout_id)
         status = payout['status']
         print(f"Payout Status for {payout_id}: {status}")
-        return payout
+        return {
+            "stat":"Ok",
+            "payout":payout
+        }
     except Exception as e:
         print(f"Error fetching payout status: {e}")
-        return None
+        return {
+            "stat":"Not Ok",
+            "error":str(e)
+        }
 
 
 
 
-def main_func(using_cred,clientname,clientemail,contact,ifsc,account_number):
-    check_customer = get_customer_by_email(clientemail)
-    if "error" not in check_customer and check_customer["stat"] == "Ok":
-        pass
-    elif "error" not in check_customer and check_customer["stat"] != "Ok":
+def main_func(using_cred:str,clientname:str,clientemail:str,contact:str,ifsc:str,account_number:str):
+    try:
         get_cred = credentials(using_cred)
-        if get_cred["stat"] == "Ok":
-            session = create_client_session(get_cred["key_id"],get_cred["secret"])
+        print("get_cred :: ",get_cred)
+        session = create_client_session(get_cred["key_id"],get_cred["secret"])
+        check_customer = get_customer_by_email(clientemail,session)
+        if "error" not in check_customer and check_customer["stat"] == "Ok":
+            return {
+                "data":check_customer["customer"]
+            }
+        elif "error" not in check_customer and check_customer["stat"] != "Ok":
+            
+        # if get_cred["stat"] == "Ok":
             create_user = create_customer(clientname,clientemail,contact,session)
             if create_user["stat"] == "Ok":
                 fund_acc = create_fund_account(create_user["customer_id"],clientname,ifsc,account_number,session)
                 if fund_acc["stat"] == "Ok":
-                    pass
+                    initi_penny_drop = initiate_penny_drop(fund_acc["fund_account"]["id"],session)
+                    if initi_penny_drop["stat"] == "Ok":
+                        payout_status = get_payout_status(initi_penny_drop["payout"]["id"],session)
+                        if payout_status["stat"] == "Ok":
+                            return payout_status
+                        else:
+                            return "Payout status error"
+                    else:
+                        return "Initiate penny drop error"
                 else:
-                    pass
+                    return "Fund account creation error"
             else:
-                pass
-            
-        else:
-            return {
-                "error":"getting credentials error",
-                "stat":"Not Ok"
-            }
+                return "create user error"
+                
+        # else:
+        #     return {
+        #         "error":"getting credentials error",
+        #         "stat":"Not Ok"
+        #     }
+    except Exception as e:
+        return {
+            "stat":"Not Ok",
+            "error":str(e),
+            "msg":"syntax error 1"
+        }
+
