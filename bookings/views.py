@@ -11,7 +11,7 @@ import json
 import time
 import random
 from datetime import datetime
-import razorpay_datas
+# import razorpay_datas
 
 
 

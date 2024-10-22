@@ -39,3 +39,35 @@ def test_credentials(request):
             },
             status=500,
         )
+
+
+
+@api_view(["POST"])
+def live_credentials(request):
+    try:
+        input_data = request.data.copy()
+        input_data["saved_date_time"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        serializer = Live_credentials_serializers(data=input_data)
+        if serializer.is_valid():
+            live_credentials.objects.all().update(active_status="NO")
+            serializer.save()
+            return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status=200)
+        else:
+            return JsonResponse(
+                {"stat": "Not Ok", "error": serializer.errors}, status=401
+            )
+    except Exception as e:
+        print(
+            " :: live credentials error :: "
+            + str(e)
+            + " :: traceback :: "
+            + traceback.format_exc()
+        )
+        return JsonResponse(
+            {
+                "stat": "Not Ok",
+                "error": str(e),
+                "traceback": str(traceback.format_exc()),
+            },
+            status=500,
+        )
