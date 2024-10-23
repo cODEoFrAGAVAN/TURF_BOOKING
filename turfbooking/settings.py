@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "user",
     "turfs",
     "bookings",
-    "razorpay_datas"
+    "razorpay_datas",
+    "user_reviews"
 ]
 
 MIDDLEWARE = [

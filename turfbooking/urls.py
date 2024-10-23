@@ -23,5 +23,6 @@ urlpatterns = [
     path("user/",include('user.urls')),
     path("turf/",include('turfs.urls')),
     path("bookings/",include('bookings.urls')),
-    path("razorpay/",include('razorpay_datas.urls'))
+    path("razorpay/",include('razorpay_datas.urls')),
+    path("user_reviews/",include('user_reviews.urls'))
 ]
