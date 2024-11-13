@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import traceback
 from datetime import *
+from rest_framework import status
 
 # Create your views here.
 
@@ -19,10 +20,10 @@ def test_credentials(request):
         if serializer.is_valid():
             Test_credentials.objects.all().update(active_status="NO")
             serializer.save()
-            return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status=200)
+            return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status=status.HTTP_200_OK)
         else:
             return JsonResponse(
-                {"stat": "Not Ok", "error": serializer.errors}, status=401
+                {"stat": "Not Ok", "error": serializer.errors}, status=status.HTTP_401_UNAUTHORIZED
             )
     except Exception as e:
         print(
@@ -37,9 +38,8 @@ def test_credentials(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
-
 
 
 @api_view(["POST"])
@@ -51,10 +51,10 @@ def live_credentials(request):
         if serializer.is_valid():
             live_credentials.objects.all().update(active_status="NO")
             serializer.save()
-            return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status=200)
+            return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status.HTTP_200_OK)
         else:
             return JsonResponse(
-                {"stat": "Not Ok", "error": serializer.errors}, status=401
+                {"stat": "Not Ok", "error": serializer.errors}, status=status.HTTP_401_UNAUTHORIZED
             )
     except Exception as e:
         print(
@@ -69,5 +69,5 @@ def live_credentials(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

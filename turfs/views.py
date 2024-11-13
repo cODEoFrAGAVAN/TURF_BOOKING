@@ -11,6 +11,8 @@ import json
 import random
 import jwt
 from .razorpay_payments import main_func
+from rest_framework import status
+
 # import os
 
 turf_images_location = "./static/turf_images/"
@@ -51,7 +53,8 @@ def turf_registration(request):
             if serializer1.is_valid():
                 serializer1.save()
                 return Response(
-                    {"stat": "Ok", "msg": "Turf registered successfully"}, status=200
+                    {"stat": "Ok", "msg": "Turf registered successfully"},
+                    status=status.HTTP_200_OK,
                 )
             else:
                 delete_data = Turf_registration.objects.get(
@@ -65,7 +68,7 @@ def turf_registration(request):
                         "msg": "Turf not registered",
                         "error": serializer1.errors,
                     },
-                    status=400,
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
         else:
             return Response(
@@ -74,7 +77,7 @@ def turf_registration(request):
                     "msg": "Turf not registered",
                     "error": serializer.errors,
                 },
-                status=400,
+                status=status.HTTP_400_BAD_REQUEST,
             )
     except Exception as e:
         print(
@@ -89,7 +92,7 @@ def turf_registration(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -110,7 +113,8 @@ def checking(request):
                 "stat": "Not Ok",
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
-            }
+            },
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -133,12 +137,13 @@ def forget_password(request):
                     "stat": "Ok",
                     "otp": str(random_number),
                     "msg": "otp sent to your register mobile number and mailid",
-                }
+                },
+                status=status.HTTP_200_OK,
             )
         else:
             return Response(
                 {"stat": "Not Ok", "error": serializer.errors, "msg": "otp not sent"},
-                status=401,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
     except Exception as e:
         print(
@@ -149,7 +154,7 @@ def forget_password(request):
         )
         return Response(
             {"stat": "Not Ok", "error": str(e), "traceback": traceback.format_exc()},
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -161,18 +166,24 @@ def check_otp(request):
         otp = input_data.get("otp", None)
         if user_name is None or otp is None:
             return Response(
-                {"stat": "Not Ok", "error": "give correct credentials"}, status=401
+                {"stat": "Not Ok", "error": "give correct credentials"},
+                status=status.HTTP_401_UNAUTHORIZED,
             )
         check_data = Forget_turf_password.objects.get(user_name=user_name, otp=otp)
         if check_data.user_name == user_name and check_data.otp == otp:
-            return Response({"stat": "Ok", "msg": "otp matched"}, status=200)
+            return Response(
+                {"stat": "Ok", "msg": "otp matched"}, status=status.HTTP_200_OK
+            )
         else:
             return Response(
                 {"stat": "Not Ok", "msg": "otp not mathced with this user name"},
-                status=401,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
     except Forget_turf_password.DoesNotExist:
-        return Response({"stat": "Not Ok", "msg": "otp not valid"}, status=401)
+        return Response(
+            {"stat": "Not Ok", "msg": "otp not valid"},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
     except Exception as e:
         print(
             " :: check_otp :: " + str(e) + " :: traceback :: " + traceback.format_exc()
@@ -183,7 +194,7 @@ def check_otp(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -203,15 +214,19 @@ def update_password(request):
         update_pass.password = new_password
         update_pass.save()
         return Response(
-            {"stat": "Ok", "msg": "Password updated successfully"}, status=200
+            {"stat": "Ok", "msg": "Password updated successfully"},
+            status=status.HTTP_200_OK,
         )
     except Forget_turf_password.DoesNotExist:
         return Response(
             {"stat": "Not Ok", "error": "otp not mathced with this user name"},
-            status=401,
+            status=status.HTTP_401_UNAUTHORIZED,
         )
     except Turf_registration.DoesNotExist:
-        return Response({"stat": "Not Ok", "error": "user doesn't exists"}, status=401)
+        return Response(
+            {"stat": "Not Ok", "error": "user doesn't exists"},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
     except Exception as e:
         print(
             " :: update password error :: "
@@ -225,7 +240,7 @@ def update_password(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -237,7 +252,8 @@ def turf_user_login(request):
         password = input_data.get("password", None)
         if user_name is None or password is None:
             return Response(
-                {"stat": "Not Ok", "error": "give valid credentials"}, status=401
+                {"stat": "Not Ok", "error": "give valid credentials"},
+                status=status.HTTP_401_UNAUTHORIZED,
             )
         user = Turf_registration.objects.get(user_name=user_name, password=password)
         if user:
@@ -252,12 +268,15 @@ def turf_user_login(request):
                 "exp_time": expired_time,
             }
             encoded = jwt.encode(payload, (secret_key.random_token), algorithm="HS256")
-            return JsonResponse(
+            return Response(
                 {"msg": "Log in successfully", "stat": "Ok", "token": encoded},
-                status=200,
+                status=status.HTTP_200_OK,
             )
         else:
-            return JsonResponse({"msg": "Log in failed", "stat": "Ok"}, status=400)
+            return Response(
+                {"msg": "Log in failed", "stat": "Ok"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
     except Exception as e:
         print(
             ":: turf login error ::"
@@ -271,7 +290,7 @@ def turf_user_login(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -295,7 +314,7 @@ def update_turf_deatils(request):
                     "stat": "Not Ok",
                     "error": "give correct key and value for updating turf details",
                 },
-                status=401,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
         else:
             update_details = Turf_registration.objects.get(
@@ -315,7 +334,8 @@ def update_turf_deatils(request):
                 update_details.turf_start_time = update_key["turf_start_time"]
             update_details.save()
             return Response(
-                {"stat": "Ok", "msg": "Data updated successfully"}, status=200
+                {"stat": "Ok", "msg": "Data updated successfully"},
+                status=status.HTTP_200_OK,
             )
     except Exception as e:
         print(
@@ -330,7 +350,7 @@ def update_turf_deatils(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -350,12 +370,12 @@ def update_turf_mobile_number(request):
                     "msg": "Otp sent to new number",
                     "otp": str(random_number),
                 },
-                status=200,
+                status=status.HTTP_200_OK,
             )
         else:
             return Response(
                 {"stat": "Not Ok", "error": serializer.errors, "msg": "otp not sent"},
-                status=401,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
     except Exception as e:
         print(
@@ -370,7 +390,7 @@ def update_turf_mobile_number(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -407,17 +427,22 @@ def verify_new_turf_mbnum(request):
         turf_reg.turf_mobile_number = mobile_number
         turf_reg.save()
         return Response(
-            {"stat": "Ok", "msg": "Number updated successfully"}, status=200
+            {"stat": "Ok", "msg": "Number updated successfully"},
+            status=status.HTTP_200_OK,
         )
     except Turf_registration.DoesNotExist:
         return Response(
             {
                 "stat": "Not Ok",
                 "error": "User doesn't exists with this user name and password",
-            }
+            },
+            status=status.HTTP_401_UNAUTHORIZED,
         )
     except Update_turf_mobile_number.DoesNotExist:
-        return Response({"stat": "Not Ok", "error": "Otp invalid"}, status=401)
+        return Response(
+            {"stat": "Not Ok", "error": "Otp invalid"},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
     except Exception as e:
         print(
             " :: verify_new_turf_mbnum error :: "
@@ -431,37 +456,51 @@ def verify_new_turf_mbnum(request):
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def add_bank_details(request):
     try:
         input_data = request.data.copy()
-        user_name = input_data.get("user_name",None)
-        turf_id = input_data.get("turf_id",None)
-        client_name = input_data.get("client_name",None)
-        client_email = input_data.get("client_email",None)
-        contact = input_data.get("contact_number",None)
-        bank_ifsc = input_data.get("ifsc",None)
-        bank_account_number = input_data.get("account_number",None)
-        if (user_name is None or client_email is None or client_name is None or contact is None or bank_ifsc is None or bank_account_number is None) or (user_name == "" or client_email == "" or client_name == "" or contact == "" or bank_ifsc == "" or bank_account_number == ""):
-            return JsonResponse(
-                {
-                    "error":"give correct input data"
-                },status = 500
+        user_name = input_data.get("user_name", None)
+        turf_id = input_data.get("turf_id", None)
+        client_name = input_data.get("client_name", None)
+        client_email = input_data.get("client_email", None)
+        contact = input_data.get("contact_number", None)
+        bank_ifsc = input_data.get("ifsc", None)
+        bank_account_number = input_data.get("account_number", None)
+        if (
+            user_name is None
+            or client_email is None
+            or client_name is None
+            or contact is None
+            or bank_ifsc is None
+            or bank_account_number is None
+        ) or (
+            user_name == ""
+            or client_email == ""
+            or client_name == ""
+            or contact == ""
+            or bank_ifsc == ""
+            or bank_account_number == ""
+        ):
+            return Response(
+                {"error": "give correct input data"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
-        msg = main_func(using_cred="TEST",clientname=client_name,clientemail=client_email,contact=contact,ifsc=bank_ifsc,account_number=bank_account_number)
-        return JsonResponse({
-            "stat":"Ok",
-            "success_msg":msg
-        })
+        msg = main_func(
+            using_cred="TEST",
+            clientname=client_name,
+            clientemail=client_email,
+            contact=contact,
+            ifsc=bank_ifsc,
+            account_number=bank_account_number,
+        )
+        return Response({"stat": "Ok", "success_msg": msg}, status=status.HTTP_200_OK)
     except Exception as e:
-        return JsonResponse(
-            {
-                "stat":"Not Ok",
-                "error":str(e),
-                "msg":"error in add bank details api"
-            },status = 500
+        return Response(
+            {"stat": "Not Ok", "error": str(e), "msg": "error in add bank details api"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )

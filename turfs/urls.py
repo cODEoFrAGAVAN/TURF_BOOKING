@@ -10,6 +10,6 @@ urlpatterns = [
     path("update_password", update_password),
     path("update_turf_details", update_turf_deatils),
     path("update_turf_mobile_number", update_turf_mobile_number),
-    path("verify_updated_number",verify_new_turf_mbnum),
-    path("add_bank_details",add_bank_details)
+    path("verify_updated_number", verify_new_turf_mbnum),
+    path("add_bank_details", add_bank_details),
 ]

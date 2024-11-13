@@ -128,36 +128,76 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-import os
-
-import os
 
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    # 'formatters': {
-    #     'verbose': {
-    #         'format': '{levelname} {asctime} {module} {message}',
-    #         'style': '{',
-    #     },
-    # },
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
         'file': {
-            'level': 'ERROR',  # Set the level to ERROR to log only errors and above
+            'level': 'WARNING',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'errors.log'),  # Log file path
-            # 'formatter': 'verbose',  # Formatter to use
+            'filename': 'django_warnings.log',
+            'formatter': 'verbose',
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['file'],
-            'level': 'ERROR',  # Set the logger level to ERROR
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
             'propagate': True,
         },
-        # You can add other loggers here if needed
+        'myapp': {  # Custom logger for a Django app named 'myapp'
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
+
+
+# import os
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     # 'formatters': {
+#     #     'verbose': {
+#     #         'format': '{levelname} {asctime} {module} {message}',
+#     #         'style': '{',
+#     #     },
+#     # },
+#     'handlers': {
+#         'file': {
+#             'level': 'ERROR',  # Set the level to ERROR to log only errors and above
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'errors.log'),  # Log file path
+#             # 'formatter': 'verbose',  # Formatter to use
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['file'],
+#             'level': 'ERROR',  # Set the logger level to ERROR
+#             'propagate': True,
+#         },
+#         # You can add other loggers here if needed
+#     },
+# }
 
 # LOGGING = {
 #     'version': 1,

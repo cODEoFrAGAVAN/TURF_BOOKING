@@ -3,7 +3,7 @@ from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import JsonResponse
+# from django.http import JsonResponse
 import jwt
 import random
 import pandas as pd
@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 import time
 import logging, traceback
 from .auth import *
+from rest_framework import status
+import logging
 
 
 logger = logging.getLogger(__name__)
@@ -43,32 +45,32 @@ def login(request):
                 encoded = jwt.encode(
                     payload, (secret_key.random_token), algorithm="HS256"
                 )
-                return JsonResponse(
+                return Response(
                     {"msg": "Log in successfully", "stat": "Ok", "token": encoded},
-                    status=200,
+                    status=status.HTTP_200_OK,
                 )
             else:
-                return JsonResponse({"msg": "Log in failed", "stat": "Ok"}, status=400)
+                return Response({"msg": "Log in failed", "stat": "Ok"}, status.HTTP_400_BAD_REQUEST)
 
         else:
-            return JsonResponse(
+            return Response(
                 {
                     "msg": "Log in failed",
                     "stat": "Not Ok",
                     "error": serializer.error_messages,
                 },
-                status=400,
+                status=status.HTTP_400_BAD_REQUEST,
             )
     except Exception as e:
         # logger.error('An error occured %s'+traceback.format_exc())
-        print("login error :: " + str(e) + " :: traceback :: " + traceback.format_exc())
-        return JsonResponse(
+        logger.error("login error :: " + str(e) + " :: traceback :: " + traceback.format_exc())
+        return Response(
             {
                 "error": str(e),
                 "stat": "Not Ok",
                 "traceback": str(traceback.format_exc()),
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
@@ -92,7 +94,7 @@ def user_signin_up(request):
                         "stat": "Ok",
                         "msg": "User created",
                     },
-                    status=200,
+                    status=status.HTTP_200_OK,
                 )
             else:
                 return Response(
@@ -101,7 +103,7 @@ def user_signin_up(request):
                         "msg": "User not created",
                         "error": serializer1.errors,
                     },
-                    status=400,
+                    status = status.HTTP_400_BAD_REQUEST,
                 )
 
         else:
@@ -111,22 +113,22 @@ def user_signin_up(request):
                     "msg": "User not created",
                     "error": serializer.errors,
                 },
-                status=400,
+                status=status.HTTP_400_BAD_REQUEST,
             )
     except Exception as e:
-        print(
+        logger.error(
             " :: user_signin_up :: "
             + str(e)
             + " :: traceback :: "
             + traceback.format_exc()
         )
-        return JsonResponse(
+        return Response(
             {
                 "error": str(e),
                 "traceback": str(traceback.format_exc()),
                 "stat": "Not Ok",
             },
-            status=500,
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
     
 @api_view(['POST'])
@@ -147,29 +149,29 @@ def forget_user_password(request):
                 "stat":"Ok",
                 "otp":str(random_number),
                 "msg":"otp sent to your registered mail id and mobile number"
-            },status=200)
+            },status=status.HTTP_200_OK)
         else:
             return Response(
                 {
                     "stat":"Not Ok",
                     "error":serializer.errors,
                     "msg":"otp not sent"
-                },status=401
+                },status=status.HTTP_401_UNAUTHORIZED
             )
     except User_signup.DoesNotExist:
         return Response(
             {
                 'stat':'Not Ok',
                 'error':"user doesn't exists"
-            },status=401
+            },status=status.HTTP_401_UNAUTHORIZED
         )
     except Exception as e:
-        print(": : forget password error : : "+str(e)+" : : traceback : : "+traceback.format_exc())
+        logger.error(": : forget password error : : "+str(e)+" : : traceback : : "+traceback.format_exc())
         return Response({
             "stat":"Not Ok",
             "error":str(e),
             "traceback":str(traceback.format_exc())
-        },status=500)
+        },status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 @api_view(["POST"])
 def verify_otp(request):
@@ -182,7 +184,7 @@ def verify_otp(request):
                 {
                     'stat':'Not Ok',
                     'error':'give correct credentials'
-                },status=401
+                },status=status.HTTP_401_UNAUTHORIZED
             )
         saved_otp = Forget_user_password.objects.get(user_name = input_data['user_name'],otp = input_data['otp'])
         if saved_otp.user_name == user_name and saved_otp.otp == otp:
@@ -190,30 +192,30 @@ def verify_otp(request):
                 {
                     "stat":"Ok",
                     "msg":"otp matched"
-                },status=200
+                },status=status.HTTP_200_OK
             )
         else:
             return Response(
                 {
                     "stat":"Not Ok",
                     "msg":"otp not mathced with this user name"
-                },status=401
+                },status=status.HTTP_401_UNAUTHORIZED
             )
     except Forget_user_password.DoesNotExist:
         return Response(
                 {
                     "stat":"Not Ok",
                     "msg":"otp not mathced with this user name"
-                },status=401
+                },status=status.HTTP_401_UNAUTHORIZED
             )
     except Exception as e:
-        print(": : verify otp error : : "+str(e)+" : :  traceback : : "+traceback.format_exc())
+        logger.error(": : verify otp error : : "+str(e)+" : :  traceback : : "+traceback.format_exc())
         return Response(
             {
                 "stat":"Not Ok",
                 "error":str(e),
                 "traceback":str(traceback.format_exc())
-            },status=500
+            },status.HTTP_500_INTERNAL_SERVER_ERROR
         )
 
 @api_view(["POST"])
@@ -230,28 +232,28 @@ def update_password(request):
             {
                 "stat":"Ok",
                 "msg":"Password updated successfully"
-            },status=200
+            },status.HTTP_200_OK
         )
     except Forget_user_password.DoesNotExist:
         return Response(
             {
                 "stat":"Not Ok",
                 "msg":"otp not mathced with this user name"
-            },status=401
+            },status=status.HTTP_401_UNAUTHORIZED
         )
     except update_pass.DoesNotExist:
         return Response(
             {
                 "stat":"Not Ok",
                 "msg":"user doesn't exists"
-            },status=401
+            },status=status.HTTP_401_UNAUTHORIZED
         )
     except Exception as e:
-        print(": : update password error : : "+str(e)+" : :  traceback : : "+traceback.format_exc())
+        logger.error(": : update password error : : "+str(e)+" : :  traceback : : "+traceback.format_exc())
         return Response(
             {
                 "stat":"Not Ok",
                 "error":str(e),
                 "traceback":str(traceback.format_exc())
-            },status=500
+            },status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
