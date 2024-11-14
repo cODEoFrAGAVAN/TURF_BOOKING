@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from django.http import Response
+# from django.http import Response
 from rest_framework.decorators import api_view
 import pandas as pd
 from .models import *

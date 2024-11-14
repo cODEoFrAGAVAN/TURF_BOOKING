@@ -37,7 +37,7 @@ def create_customer(
     modelName: str, clientname: str, clientemail: str, contactnumber: str
 ):
     cred = credentials(modelName)
-    auth_string = f"{cred["key_id"]}:{cred["secret"]}"
+    auth_string = f"{cred['key_id']}:{cred['secret']}"
     auth_base64 = base64.b64encode(auth_string.encode()).decode()
     url = "https://api.razorpay.com/v1/customers"
     payload = json.dumps(

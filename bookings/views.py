@@ -13,9 +13,10 @@ import random
 from datetime import datetime
 from rest_framework import status
 import razorpay_datas
-
+from decorators import *
 
 @api_view(["POST"])
+@authorize
 def show_turf_list(request):
     try:
         all_turf_list = Turf_registration.objects.all().values(

@@ -3,6 +3,8 @@
 import os
 import sys
 
+
+
 def folder_creation():
     if not os.path.isdir("./static"):
         os.makedirs("./static")
