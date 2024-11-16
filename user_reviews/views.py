@@ -7,6 +7,9 @@ from .models import *
 from .serializers import *
 import traceback
 from rest_framework import status
+import logging
+logger = logging.getLogger('django')
+
 
 
 @api_view(["POST"])
@@ -30,12 +33,7 @@ def post_reviews(request):
             )
 
     except Exception as e:
-        print(
-            ":: post reviews error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in post reviews :: %s",e,exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -71,12 +69,7 @@ def get_reviews_by_turf_id(request):
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception as e:
-        print(
-            " :: get reviews by turf id error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in get reviews by turf id :: %s",e,exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -119,12 +112,7 @@ def update_review_by_turf_id(request):
             status=status.HTTP_404_NOT_FOUND,
         )
     except Exception as e:
-        print(
-            ":: update reviews error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in update reviews  :: %s",e,exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",

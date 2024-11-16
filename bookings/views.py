@@ -14,6 +14,9 @@ from datetime import datetime
 from rest_framework import status
 import razorpay_datas
 from decorators import *
+import logging
+logger = logging.getLogger('django')
+
 
 @api_view(["POST"])
 @authorize
@@ -36,12 +39,7 @@ def show_turf_list(request):
             {"stat": "Ok", "data": df.to_dict(orient="records")}, status=status.HTTP_200_OK
         )
     except Exception as e:
-        print(
-            ":: Show turf list error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in show turf list :: %s",e,exc_info=True)
         return JsonResponse(
             {
                 "stat": "Not Ok",
@@ -61,6 +59,7 @@ def payment_intiate(booking_id, amount):
         payment = razorpay_client.order.create(data=data)
         return {"stat": "Ok", "payment": payment}
     except Exception as e:
+        logger.error("Error in payment initiate function :: %s",e,exc_info=True)
         return {"stat": "Not Ok", "error": str(e)}
 
 
@@ -123,12 +122,7 @@ def booking(request):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
     except Exception as e:
-        print(
-            " :: booking error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in booking :: %s",e,exc_info=True)
         return JsonResponse(
             {
                 "stat": "Not Ok",
@@ -154,12 +148,7 @@ def lock_release(request):
     except booking_obj.DoesNotExist:
         return JsonResponse({"stat": "Not Ok", "error": "slot not found"}, status=status.HTTP_401_UNAUTHORIZED)
     except Exception as e:
-        print(
-            " :: lock release error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in lock release :: %s",e,exc_info=True)
         return JsonResponse(
             {
                 "stat": "Not Ok",
@@ -194,15 +183,10 @@ def verify_payment(request):
             )
     except razorpay_datas.errors.SignatureVerificationError:
         return JsonResponse(
-            {"stat": "Not Ok", "msg": "Payment Verification Failed"}, status=400
+            {"stat": "Not Ok", "msg": "Payment Verification Failed"}, status=status.HTTP_400_BAD_REQUEST
         )
     except Exception as e:
-        print(
-            " :: verify payment error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in verify payment :: %s",e,exc_info=True)
         return JsonResponse(
             {
                 "stat": "Not Ok",

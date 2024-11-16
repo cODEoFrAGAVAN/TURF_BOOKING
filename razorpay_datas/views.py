@@ -7,6 +7,8 @@ from rest_framework.decorators import api_view
 import traceback
 from datetime import *
 from rest_framework import status
+import logging
+logger = logging.getLogger('django')
 
 # Create your views here.
 
@@ -26,12 +28,7 @@ def test_credentials(request):
                 {"stat": "Not Ok", "error": serializer.errors}, status=status.HTTP_401_UNAUTHORIZED
             )
     except Exception as e:
-        print(
-            " :: test credentials error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in test credentials :: %s",e,exc_info=True)
         return JsonResponse(
             {
                 "stat": "Not Ok",
@@ -57,12 +54,7 @@ def live_credentials(request):
                 {"stat": "Not Ok", "error": serializer.errors}, status=status.HTTP_401_UNAUTHORIZED
             )
     except Exception as e:
-        print(
-            " :: live credentials error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in live credentials :: %s",e,exc_info=True)
         return JsonResponse(
             {
                 "stat": "Not Ok",

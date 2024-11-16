@@ -12,10 +12,10 @@ import time
 import logging, traceback
 from .auth import *
 from rest_framework import status
-import logging
 
 
-logger = logging.getLogger(__name__)
+
+logger = logging.getLogger('django')
 
 
 
@@ -63,8 +63,7 @@ def login(request):
                 status=status.HTTP_400_BAD_REQUEST,
             )
     except Exception as e:
-        # logger.error('An error occured %s'+traceback.format_exc())
-        logger.error("login error :: " + str(e) + " :: traceback :: " + traceback.format_exc())
+        logger.error("Error in login :: %s",e,exc_info=True)
         return Response(
             {
                 "error": str(e),
@@ -86,7 +85,17 @@ def user_signin_up(request):
             serializer.save()
             token_dict["user_name"] = input_data["user_name"]
             token_dict["mobile"] = input_data["mobile_number"]
-            token_dict["random_token"] = str(user_secret_key())
+            _32_bit_token = user_secret_key()
+            if _32_bit_token:
+                token_dict["random_token"] = str(_32_bit_token)
+            else:
+                return Response(
+                    {
+                        'stat':'Not Ok',
+                        'msg':'user not created',
+                        'error':'32 bit token generation error'
+                    },status=status.HTTP_400_BAD_REQUEST
+                )
             serializer1 = Random_token_seriallizer1(data=token_dict)
             if serializer1.is_valid():
                 serializer1.save()
@@ -117,12 +126,7 @@ def user_signin_up(request):
                 status=status.HTTP_400_BAD_REQUEST,
             )
     except Exception as e:
-        logger.error(
-            " :: user_signin_up :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in user sigin up :: %s",e,exc_info=True)
         return Response(
             {
                 "error": str(e),
@@ -167,7 +171,7 @@ def forget_user_password(request):
             },status=status.HTTP_401_UNAUTHORIZED
         )
     except Exception as e:
-        logger.error(": : forget password error : : "+str(e)+" : : traceback : : "+traceback.format_exc())
+        logger.error("Error in forget user password :: %s",e,exc_info=True)
         return Response({
             "stat":"Not Ok",
             "error":str(e),
@@ -210,7 +214,7 @@ def verify_otp(request):
                 },status=status.HTTP_401_UNAUTHORIZED
             )
     except Exception as e:
-        logger.error(": : verify otp error : : "+str(e)+" : :  traceback : : "+traceback.format_exc())
+        logger.error("Error in verify otp :: %s",e,exc_info=True)
         return Response(
             {
                 "stat":"Not Ok",
@@ -250,7 +254,7 @@ def update_password(request):
             },status=status.HTTP_401_UNAUTHORIZED
         )
     except Exception as e:
-        logger.error(": : update password error : : "+str(e)+" : :  traceback : : "+traceback.format_exc())
+        logger.error("Error in update password :: %s",e,exc_info=True)
         return Response(
             {
                 "stat":"Not Ok",

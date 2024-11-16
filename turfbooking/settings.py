@@ -137,116 +137,24 @@ LOGGING = {
             'format': '{levelname} {asctime} {module} {message}',
             'style': '{',
         },
-        'simple': {
-            'format': '{levelname} {message}',
+        'detailed': {
+            'format': '{levelname} {asctime} {module} {message} {exc_info}',
             'style': '{',
         },
     },
     'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
         'file': {
-            'level': 'WARNING',
+            'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': 'django_warnings.log',
-            'formatter': 'verbose',
+            'filename': 'error.log',
+            'formatter': 'detailed',  # Use the formatter with exc_info
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
+            'handlers': ['file'],
+            'level': 'ERROR',
             'propagate': True,
-        },
-        'myapp': {  # Custom logger for a Django app named 'myapp'
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
         },
     },
 }
-
-
-# import os
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     # 'formatters': {
-#     #     'verbose': {
-#     #         'format': '{levelname} {asctime} {module} {message}',
-#     #         'style': '{',
-#     #     },
-#     # },
-#     'handlers': {
-#         'file': {
-#             'level': 'ERROR',  # Set the level to ERROR to log only errors and above
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'errors.log'),  # Log file path
-#             # 'formatter': 'verbose',  # Formatter to use
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'ERROR',  # Set the logger level to ERROR
-#             'propagate': True,
-#         },
-#         # You can add other loggers here if needed
-#     },
-# }
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'my_app.log')
-#                 # 'my_app.log',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'verbose': {
-#             'format': '{levelname} {asctime} {module} {message}',
-#             'style': '{',
-#         },
-#         'simple': {
-#             'format': '{levelname} {message}',
-#             'style': '{',
-#         },
-#     },
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',  # Minimum log level to be written to the file
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'django.log'),  # Log file path
-#             'formatter': 'verbose',  # Formatter to use
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#         # Add other loggers if needed
-#     },
-# }
-

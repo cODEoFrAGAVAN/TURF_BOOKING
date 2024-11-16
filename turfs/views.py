@@ -12,6 +12,10 @@ import random
 import jwt
 from .razorpay_payments import main_func
 from rest_framework import status
+import logging
+
+logger = logging.getLogger("django")
+
 
 # import os
 
@@ -80,12 +84,7 @@ def turf_registration(request):
                 status=status.HTTP_400_BAD_REQUEST,
             )
     except Exception as e:
-        print(
-            ":: turf_registration error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in turf registration :: %s", e, exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -146,12 +145,7 @@ def forget_password(request):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
     except Exception as e:
-        print(
-            ":: forget password error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in forget password :: %s", e, exc_info=True)
         return Response(
             {"stat": "Not Ok", "error": str(e), "traceback": traceback.format_exc()},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -185,9 +179,7 @@ def check_otp(request):
             status=status.HTTP_401_UNAUTHORIZED,
         )
     except Exception as e:
-        print(
-            " :: check_otp :: " + str(e) + " :: traceback :: " + traceback.format_exc()
-        )
+        logger.error("Error in check otp :: %s", e, exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -228,12 +220,7 @@ def update_password(request):
             status=status.HTTP_401_UNAUTHORIZED,
         )
     except Exception as e:
-        print(
-            " :: update password error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in update password :: %s", e, exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -278,12 +265,7 @@ def turf_user_login(request):
                 status=status.HTTP_400_BAD_REQUEST,
             )
     except Exception as e:
-        print(
-            ":: turf login error ::"
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in turf user login :: %s", e, exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -338,12 +320,7 @@ def update_turf_deatils(request):
                 status=status.HTTP_200_OK,
             )
     except Exception as e:
-        print(
-            " :: update turf details :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in update turf details :: %s", e, exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -378,12 +355,7 @@ def update_turf_mobile_number(request):
                 status=status.HTTP_401_UNAUTHORIZED,
             )
     except Exception as e:
-        print(
-            " :: update turf mobile :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in update turf mobile number :: %s", e, exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -444,12 +416,7 @@ def verify_new_turf_mbnum(request):
             status=status.HTTP_401_UNAUTHORIZED,
         )
     except Exception as e:
-        print(
-            " :: verify_new_turf_mbnum error :: "
-            + str(e)
-            + " :: traceback :: "
-            + traceback.format_exc()
-        )
+        logger.error("Error in verify new turf number :: %s", e, exc_info=True)
         return Response(
             {
                 "stat": "Not Ok",
@@ -500,7 +467,12 @@ def add_bank_details(request):
         )
         return Response({"stat": "Ok", "success_msg": msg}, status=status.HTTP_200_OK)
     except Exception as e:
+        logger.error("Error in add bank deatils :: %s", e, exc_info=True)
         return Response(
-            {"stat": "Not Ok", "error": str(e), "msg": "error in add bank details api"},
+            {
+                "stat": "Not Ok",
+                "error": str(e),
+                "traceback": str(traceback.format_exc()),
+            },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
