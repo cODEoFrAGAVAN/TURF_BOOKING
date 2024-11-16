@@ -13,9 +13,24 @@ import random
 from datetime import datetime
 from rest_framework import status
 import razorpay_datas
-from decorators import *
+from decorators import * 
 import logging
+import razorpay
+from razorpay_datas.models import *
 logger = logging.getLogger('django')
+
+def razorpay_client_session():
+    try:
+        cred = Test_credentials.objects.values("key_id", "secret").get(
+                active_status="YES"
+            )
+        client = razorpay.Client(auth=(cred.Key_id, cred.secret))
+        return client
+    except Test_credentials.DoesNotExist:
+        return False
+    except Exception as e:
+        logger.error(" Error in razor pay client session creation :: ",e,exc_info=True)
+        return False
 
 
 @api_view(["POST"])
@@ -55,7 +70,7 @@ def payment_intiate(booking_id, amount):
             auth=("rzp_test_OduFyTcaEnLe6N", "wK80MjEIAc9aPoL2BLUTIOlS")
         )
         # payment_id = booking_id
-        data = {"amount": amount, "currency": "INR", "receipt": booking_id}
+        data = {"amount": amount, "currency": "INR", "receipt": booking_id,"payment_capture": 1}
         payment = razorpay_client.order.create(data=data)
         return {"stat": "Ok", "payment": payment}
     except Exception as e:
@@ -194,4 +209,45 @@ def verify_payment(request):
                 "trceback": str(traceback.format_exc()),
             },
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        )
+
+
+@api_view(['POST'])
+def via_upi_payment(request):
+    try:
+        input_data = request.data.copy()
+        payment_order_id = input_data["payment_order_id"]
+        upi_id = input_data["upi_id"]
+        payment_data = {
+            "order_id":payment_order_id,
+            "method":"upi",
+            "upi":{
+                "vpa":upi_id
+            }
+        }
+        client = razorpay_client_session()
+        if client:
+            payment = client.payment.create(payment_data)
+            return Response(
+                {
+                    "stat":"Ok",
+                    "payment":payment
+                },status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {
+                    "stat":"Not Ok",
+                    "error":"Razor pay client session creation error",
+                    "msg":"payment cannot be initated"
+                },status=status.HTTP_400_BAD_REQUEST
+            )
+    except Exception as e:
+        logger.error("Error in via upi payment :: %s",e,exc_info=True)
+        return Response(
+            {
+                "stat":"Not Ok",
+                "error":str(e),
+                "traceback":str(traceback.format_exc())
+            },status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
