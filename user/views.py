@@ -51,7 +51,7 @@ def login(request):
                     status=status.HTTP_200_OK,
                 )
             else:
-                return Response({"msg": "Log in failed", "stat": "Ok"}, status.HTTP_400_BAD_REQUEST)
+                return Response({"msg": "Log in failed", "stat": "Not Ok"}, status.HTTP_400_BAD_REQUEST)
 
         else:
             return Response(

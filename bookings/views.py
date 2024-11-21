@@ -8,7 +8,6 @@ from turfs.models import *
 import traceback
 import pandas as pd
 import json
-import time
 import random
 from datetime import datetime
 from rest_framework import status
@@ -17,6 +16,7 @@ from decorators import *
 import logging
 import razorpay
 from razorpay_datas.models import *
+import time
 logger = logging.getLogger('django')
 
 def razorpay_client_session():
@@ -24,12 +24,16 @@ def razorpay_client_session():
         cred = Test_credentials.objects.values("key_id", "secret").get(
                 active_status="YES"
             )
-        client = razorpay.Client(auth=(cred.Key_id, cred.secret))
+        print("cred :: ",cred)
+        # print(cred.Key_id, cred.secret)
+        client = razorpay.Client(auth=(cred['key_id'], cred['secret']))
         return client
     except Test_credentials.DoesNotExist:
+        print("True1")
         return False
     except Exception as e:
-        logger.error(" Error in razor pay client session creation :: ",e,exc_info=True)
+        logger.error(" Error in razor pay client session creation :: %s",str(e),exc_info=True)
+        print("True2")
         return False
 
 
@@ -66,7 +70,7 @@ def show_turf_list(request):
 
 def payment_intiate(booking_id, amount):
     try:
-        razorpay_client = razorpay_datas.Client(
+        razorpay_client = razorpay.Client(
             auth=("rzp_test_OduFyTcaEnLe6N", "wK80MjEIAc9aPoL2BLUTIOlS")
         )
         # payment_id = booking_id
@@ -226,12 +230,13 @@ def via_upi_payment(request):
             }
         }
         client = razorpay_client_session()
+        print("client session1 ",client)
         if client:
-            payment = client.payment.create(payment_data)
+            payments = client.payment.create(data=payment_data)
             return Response(
                 {
                     "stat":"Ok",
-                    "payment":payment
+                    "payment":payments
                 },status=status.HTTP_200_OK
             )
         else:
@@ -251,3 +256,25 @@ def via_upi_payment(request):
                 "traceback":str(traceback.format_exc())
             },status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+    
+    
+
+def verify_payment_signature(order_id, payment_id, razorpay_signature):
+    secret = "YOUR_KEY_SECRET"
+    payload = f"{order_id}|{payment_id}"
+    generated_signature = hmac.new(
+        bytes(secret, 'utf-8'),
+        bytes(payload, 'utf-8'),
+        hashlib.sha256
+    ).hexdigest()
+
+    if generated_signature == razorpay_signature:
+        return True
+    return False
+
+# Example usage
+is_valid = verify_payment_signature("order_DBJOWzybf0sJbb", "pay_DBJOWzybf0sJbb", "generated_signature_from_request")
+if is_valid:
+    print("Payment Verified")
+else:
+    print("Payment Verification Failed")

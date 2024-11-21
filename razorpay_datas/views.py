@@ -21,6 +21,7 @@ def test_credentials(request):
         serializer = Test_credentials_serializers(data=input_data)
         if serializer.is_valid():
             Test_credentials.objects.all().update(active_status="NO")
+            Test_credentials.save()
             serializer.save()
             return JsonResponse({"stat": "Ok", "msg": "Data inserted"}, status=status.HTTP_200_OK)
         else:

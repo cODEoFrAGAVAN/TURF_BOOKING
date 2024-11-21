@@ -1,0 +1,12 @@
+ERROR 2024-11-21 09:06:34,119 views  Error in razor pay client session creation :: 'Key_id' (<class 'KeyError'>, KeyError('Key_id'), <traceback object at 0x000002BCDB18A680>)
+Traceback (most recent call last):
+  File "D:\Projects\Django\Turf_booking\TURF_BOOKING\bookings\views.py", line 29, in razorpay_client_session
+    client = razorpay.Client(auth=(cred['Key_id'], cred['secret']))
+KeyError: 'Key_id'
+ERROR 2024-11-21 09:07:12,524 views Error in via upi payment :: 'Payment' object has no attribute 'create' (<class 'AttributeError'>, AttributeError("'Payment' object has no attribute 'create'"), <traceback object at 0x000001EFED068F40>)
+Traceback (most recent call last):
+  File "D:\Projects\Django\Turf_booking\TURF_BOOKING\bookings\views.py", line 235, in via_upi_payment
+    payment = client.payment.create(payment_data)
+AttributeError: 'Payment' object has no attribute 'create'
+ERROR 2024-11-21 09:07:12,524 log Internal Server Error: /bookings/vpa None
+ERROR 2024-11-21 09:07:12,524 basehttp "POST /bookings/vpa HTTP/1.1" 500 343 None
